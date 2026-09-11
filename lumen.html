@@ -1,22 +1,29 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>LUMEN · Discesa nell'abisso</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<title>LUMEN · Descent into the Abyss</title>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6380006770259018" crossorigin="anonymous"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root{ --cy:#5ff5e3; --pk:#ff6fb5; --gd:#ffd166; --ink:#eafcff; }
+  :root{ --cy:#5ff5e3; --pk:#ff6fb5; --gd:#ffd166; --ink:#eafcff; --safe-top:env(safe-area-inset-top,0px); --safe-bottom:env(safe-area-inset-bottom,0px); }
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{height:100%;overflow:hidden;background:#020a12}
   body{font-family:'Space Grotesk',system-ui,sans-serif;color:var(--ink);
-       -webkit-user-select:none;user-select:none;overscroll-behavior:none}
-  canvas{display:block;position:fixed;inset:0;touch-action:none;cursor:crosshair}
+       -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
+       overscroll-behavior:none;position:fixed;width:100%;height:100%;
+       padding-top:var(--safe-top);padding-bottom:var(--safe-bottom)}
+  canvas{display:block;position:fixed;inset:0;touch-action:none;cursor:crosshair;
+         -webkit-tap-highlight-color:transparent}
 
-  /* ---------- HUD ---------- */
-  #hud{position:fixed;top:0;left:0;right:0;z-index:10;padding:16px 22px;
-       display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none}
+  #hud{position:fixed;top:calc(var(--safe-top) + 8px);left:0;right:0;z-index:10;
+       padding:16px 22px;display:flex;justify-content:space-between;align-items:flex-start;
+       pointer-events:none}
   #hud.hidden{display:none}
   .hudlbl{font-size:.62rem;letter-spacing:.42em;color:rgba(234,252,255,.55);margin-bottom:2px}
   #score{font-family:'Unbounded',sans-serif;font-weight:900;font-size:2.1rem;line-height:1;
@@ -48,22 +55,22 @@
                  18%{opacity:1;letter-spacing:.45em;transform:translateY(0)}
                  75%{opacity:1}100%{opacity:0;letter-spacing:.3em}}
 
-  #hint{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:10;pointer-events:none;
-        font-size:.85rem;letter-spacing:.06em;color:rgba(234,252,255,.75);
-        transition:opacity 1.4s;white-space:nowrap}
+  #hint{position:fixed;bottom:calc(var(--safe-bottom) + 80px);left:50%;transform:translateX(-50%);z-index:10;
+        pointer-events:none;font-size:.85rem;letter-spacing:.06em;color:rgba(234,252,255,.75);
+        transition:opacity 1.4s;white-space:nowrap;text-align:center;max-width:90vw}
   #hint.fade{opacity:0}
 
-  #sysBtns{position:fixed;bottom:18px;right:18px;z-index:40;display:flex;gap:8px}
+  #sysBtns{position:fixed;bottom:calc(var(--safe-bottom) + 90px);right:18px;z-index:40;
+           display:flex;gap:8px}
   .sbtn{width:44px;height:44px;border-radius:12px;font-size:1.1rem;cursor:pointer;
         color:var(--ink);background:rgba(4,20,30,.55);border:1px solid rgba(95,245,227,.35);
-        transition:.18s;display:grid;place-items:center}
+        transition:.18s;display:grid;place-items:center;-webkit-tap-highlight-color:transparent}
   .sbtn:hover{transform:translateY(-2px);border-color:var(--cy);box-shadow:0 6px 18px rgba(95,245,227,.25)}
 
-  /* ---------- OVERLAY ---------- */
   .overlay{position:fixed;inset:0;z-index:30;display:flex;flex-direction:column;
            align-items:center;justify-content:center;text-align:center;padding:20px;
            background:radial-gradient(ellipse at 50% 28%,rgba(3,22,34,.25),rgba(1,5,9,.82));
-           transition:opacity .5s,visibility .5s}
+           transition:opacity .5s,visibility .5s;overflow-y:auto}
   .overlay.hidden{opacity:0;visibility:hidden;pointer-events:none}
   .kicker{font-size:.68rem;letter-spacing:.55em;color:var(--cy);text-transform:uppercase;margin-bottom:14px}
   h1.title{font-family:'Unbounded',sans-serif;font-weight:900;font-size:clamp(3.2rem,13vw,8.5rem);
@@ -81,7 +88,8 @@
        background:linear-gradient(135deg,rgba(95,245,227,.18),rgba(255,111,181,.16));
        border:1.5px solid rgba(95,245,227,.75);
        box-shadow:0 0 24px rgba(95,245,227,.28),inset 0 0 18px rgba(95,245,227,.08);
-       transition:.18s;animation:btnpulse 2.6s ease-in-out infinite}
+       transition:.18s;animation:btnpulse 2.6s ease-in-out infinite;
+       -webkit-tap-highlight-color:transparent}
   @keyframes btnpulse{50%{box-shadow:0 0 44px rgba(95,245,227,.5),inset 0 0 22px rgba(95,245,227,.14)}}
   .btn:hover{transform:translateY(-3px) scale(1.04)}
   .btn:active{transform:scale(.96)}
@@ -105,7 +113,17 @@
   #pausedOv.hidden{display:none}
   #pausedOv div{font-family:'Unbounded',sans-serif;font-weight:900;font-size:2rem;letter-spacing:.4em;
                 text-shadow:0 0 24px rgba(95,245,227,.7)}
-  @media(max-width:560px){.chips{max-width:92vw}.stats{grid-template-columns:repeat(2,44vw)}}
+
+  #adBanner{position:fixed;bottom:0;left:0;right:0;z-index:50;background:rgba(2,10,18,.85);
+            padding:var(--safe-bottom,10px) 10px 10px 10px;min-height:70px;
+            display:flex;justify-content:center;align-items:center;
+            border-top:1px solid rgba(95,245,227,.2);backdrop-filter:blur(8px)}
+  #adBanner ins{display:block;max-width:728px;width:100%}
+
+  @media(max-width:560px){.chips{max-width:92vw}.stats{grid-template-columns:repeat(2,44vw)}
+    #score{font-size:1.6rem}#depth{font-size:1.4rem}#lightWrap{width:140px}}
+  @media(max-width:380px){#score{font-size:1.3rem}#depth{font-size:1.2rem}
+    h1.title{font-size:2.8rem}.tagline{font-size:.82rem}}
 </style>
 </head>
 <body>
@@ -117,61 +135,73 @@
     <div id="score">0</div>
     <div id="lightWrap">
       <div id="lightBar"><div id="lightFill"></div></div>
-      <div class="hudlbl" style="margin-top:4px">LA TUA LUCE</div>
+      <div class="hudlbl" style="margin-top:4px">YOUR LIGHT</div>
     </div>
   </div>
   <div class="hudright">
-    <div class="hudlbl">PROFONDITÀ</div>
+    <div class="hudlbl">DEPTH</div>
     <div id="depth">0 m</div>
-    <div id="zoneName">SUPERFICIE SCINTILLANTE</div>
+    <div id="zoneName">SHIMMERING SURFACE</div>
   </div>
 </div>
 <div id="combo"></div>
 <div id="banner"></div>
-<div id="hint" class="fade">Segui il cursore · <b>TIENI PREMUTO</b> per nuotare · raccogli ✦</div>
+<div id="hint" class="fade">Follow the cursor · <b>HOLD</b> to swim · collect ✦</div>
 <div id="sysBtns">
   <button class="sbtn" id="muteBtn" title="Audio (M)">🔊</button>
-  <button class="sbtn" id="pauseBtn" title="Pausa (P)">⏸</button>
+  <button class="sbtn" id="pauseBtn" title="Pause (P)">⏸</button>
 </div>
 
 <div id="menu" class="overlay">
-  <div class="kicker">un'immersione negli abissi</div>
+  <div class="kicker">a descent into the abyss</div>
   <h1 class="title">LUMEN</h1>
-  <p class="tagline">Sei una piccola medusa in discesa verso il buio.<br>
-     La tua luce è la tua vita: raccoglila, proteggila. <b>Non spegnerti.</b></p>
+  <p class="tagline">You are a small jellyfish descending into the darkness.<br>
+     Your light is your life: collect it, protect it. <b>Don't fade away.</b></p>
   <div class="chips">
-    <span class="chip">🖱️ La medusa segue il cursore</span>
-    <span class="chip">⚡ Tieni premuto per nuotare</span>
-    <span class="chip">✦ La luce è vita e punteggio</span>
-    <span class="chip">🌑 Il buio profondo la consuma</span>
-    <span class="chip">🎣 Non fidarti delle luci troppo belle…</span>
+    <span class="chip">🖱️ Jellyfish follows cursor/touch</span>
+    <span class="chip">⚡ Hold to swim faster</span>
+    <span class="chip">✦ Light is life and score</span>
+    <span class="chip">🌑 Deep darkness consumes it</span>
+    <span class="chip">🎣 Don't trust beautiful lights…</span>
   </div>
-  <button class="btn" id="startBtn">IMMERGITI ▾</button>
+  <button class="btn" id="startBtn">DIVE IN ▾</button>
   <div id="recordChip"></div>
-  <div class="foot">🎧 cuffie consigliate · audio generato dal vivo · P = pausa · M = audio</div>
+  <div class="foot">🎧 headphones recommended · live synthesized audio · P = pause · M = mute</div>
 </div>
 
 <div id="over" class="overlay hidden">
-  <div class="overTitle">IL BUIO TI HA PRESO</div>
-  <div id="newRecord">★ NUOVO RECORD ★</div>
+  <div class="overTitle">THE DARKNESS TOOK YOU</div>
+  <div id="newRecord">★ NEW RECORD ★</div>
   <div class="stats">
-    <div class="stat"><div class="v" id="stDepth">0 m</div><div class="k">Profondità</div></div>
-    <div class="stat"><div class="v" id="stScore">0</div><div class="k">Lumen raccolti</div></div>
-    <div class="stat"><div class="v" id="stCombo">×1</div><div class="k">Combo massima</div></div>
-    <div class="stat"><div class="v" id="stBest">0</div><div class="k">Record</div></div>
+    <div class="stat"><div class="v" id="stDepth">0 m</div><div class="k">Depth Reached</div></div>
+    <div class="stat"><div class="v" id="stScore">0</div><div class="k">Lumen Collected</div></div>
+    <div class="stat"><div class="v" id="stCombo">×1</div><div class="k">Max Combo</div></div>
+    <div class="stat"><div class="v" id="stBest">0</div><div class="k">Best Score</div></div>
   </div>
   <div class="btnrow">
-    <button class="btn" id="retryBtn">RIPROVA</button>
-    <button class="btn ghost" id="menuBtn">Torna in superficie</button>
+    <button class="btn" id="retryBtn">TRY AGAIN</button>
+    <button class="btn ghost" id="menuBtn">Return to Surface</button>
   </div>
 </div>
 
-<div id="pausedOv" class="hidden"><div>PAUSA</div></div>
+<div id="pausedOv" class="hidden"><div>PAUSED</div></div>
+
+<div id="adBanner">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-6380006770259018"
+       data-ad-slot="IL-TUO-SLOT-ID"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+</div>
 
 <script>
+/* Initialize AdSense */
+(adsbygoogle = window.adsbygoogle || []).push({});
+
 (() => {
 'use strict';
-/* ============================ UTILITÀ ============================ */
+/* ============================ UTILITIES ============================ */
 const TAU=Math.PI*2;
 const rand=(a,b)=>a+Math.random()*(b-a);
 const pick=a=>a[Math.floor(Math.random()*a.length)];
@@ -183,7 +213,9 @@ const canvas=$('sea'), ctx=canvas.getContext('2d');
 let W=0,H=0,DPR=1;
 function resize(){DPR=Math.min(2,devicePixelRatio||1);W=innerWidth;H=innerHeight;
   canvas.width=W*DPR;canvas.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);}
-addEventListener('resize',resize);resize();
+addEventListener('resize',resize);
+addEventListener('orientationchange',()=>setTimeout(resize,100));
+resize();
 
 function makeGlow(rgb){const s=128,c=document.createElement('canvas');c.width=c.height=s;
   const g=c.getContext('2d'),gr=g.createRadialGradient(s/2,s/2,0,s/2,s/2,s/2);
@@ -260,10 +292,10 @@ const sWhale=()=>{tone(170,118,4,'sine',.11,0,true);tone(255,90,3.6,'sine',.035,
 const sHeart=()=>{tone(75,50,.1,'sine',.35);tone(68,45,.09,'sine',.25,.14);};
 const sClick=()=>tone(700,700,.06,'sine',.09);
 
-/* ============================ STATO ============================ */
-const ZONES=[[0,'Superficie scintillante'],[150,'Zona crepuscolare'],[350,'Zona di mezzanotte'],
-  [620,'Il Grande Silenzio'],[950,'Abisso nero'],[1350,'Fossa senza nome'],
-  [1800,'Il cuore del buio'],[2400,'Dove la luce sogna']];
+/* ============================ STATE ============================ */
+const ZONES=[[0,'Shimmering Surface'],[150,'Twilight Zone'],[350,'Midnight Zone'],
+  [620,'The Great Silence'],[950,'Abyssal Dark'],[1350,'The Nameless Trench'],
+  [1800,'Heart of Darkness'],[2400,'Where Light Dreams']];
 const BG=[[0,[11,77,99],[3,32,48]],[150,[8,58,85],[2,24,36]],[350,[5,32,51],[1,11,20]],
   [620,[3,18,31],[0,5,9]],[950,[2,10,18],[0,2,4]],[1400,[1,6,11],[0,1,2]]];
 function bgAt(d){let i=0;while(i<BG.length-2&&d>BG[i+1][0])i++;
@@ -333,11 +365,11 @@ function addFloat(x,y,txt,color){floats.push({x,y,txt,color,t:0,life:1.1});}
 function banner(txt){const b=$('banner');b.textContent=txt;
   b.classList.remove('show');void b.offsetWidth;b.classList.add('show');}
 
-/* ============================ LOGICA ============================ */
+/* ============================ LOGIC ============================ */
 function hit(dmg,sx,sy){
   if(P.invuln>0)return;
   if(P.shield>0){P.shield=0;P.invuln=.9;sPop();
-    burst(P.x,P.y,26,GLOW.shield,220);addFloat(P.x,P.y-30,'SCUDO!','#7fd4ff');return;}
+    burst(P.x,P.y,26,GLOW.shield,220);addFloat(P.x,P.y-30,'SHIELD!','#7fd4ff');return;}
   P.light-=dmg;P.invuln=1.3;S.shake=14;S.flash=.4;P.combo=0;sHit();
   const a=Math.atan2(P.y-sy,P.x-sx);P.vx+=Math.cos(a)*380;P.vy+=Math.sin(a)*380;
   burst(P.x,P.y,18,GLOW.red,240);addFloat(P.x,P.y-26,'-'+dmg,'#ff5a6e');
@@ -351,9 +383,9 @@ function die(){
 function collect(m,i){
   motes.splice(i,1);
   if(m.type==='shield'){P.shield=9;sShield();burst(m.x,m.y,20,GLOW.shield,180);
-    addFloat(m.x,m.y,'SCUDO ✧','#7fd4ff');return;}
+    addFloat(m.x,m.y,'SHIELD ✧','#7fd4ff');return;}
   if(m.type==='gold'){S.score+=30;S.collected++;P.magnet=5.5;sGold();
-    burst(m.x,m.y,34,GLOW.gold,260);addFloat(m.x,m.y,'+30 · MAGNETE!','#ffd166');return;}
+    burst(m.x,m.y,34,GLOW.gold,260);addFloat(m.x,m.y,'+30 · MAGNET!','#ffd166');return;}
   const val=Math.round(4*(1+Math.min(P.combo,12)*.25));
   P.combo++;P.comboT=2.6;S.maxCombo=Math.max(S.maxCombo,P.combo);
   S.score+=val;S.collected++;
@@ -363,7 +395,7 @@ function collect(m,i){
   sCollect(Math.min(P.combo,14));
   const c=$('combo');
   if(P.combo>=2){c.textContent='COMBO ×'+P.combo;c.style.opacity=1;
-    c.classList.remove('pop');void c.offsetWidth;c.classList.add('pop');}
+    c.classList.remove('pop');void b.offsetWidth;c.classList.add('pop');}
 }
 function updatePlayer(dt){
   let tx=pointer.x,ty=pointer.y,thrust=pointer.down;
@@ -373,7 +405,7 @@ function updatePlayer(dt){
     let ky=(keys.ArrowDown||keys.KeyS?1:0)-(keys.ArrowUp||keys.KeyW?1:0);
     if(kx||ky){tx=P.x+kx*260;ty=P.y+ky*260;thrust=true;}
   }
-  if(S.state==='menu'){ // autopilota
+  if(S.state==='menu'){
     P.autopilotT-=dt;
     if(P.autopilotT<=0){P.autopilotT=rand(2.2,4);
       P.autoTarget={x:rand(W*.15,W*.85),y:rand(H*.2,H*.8)};}
@@ -405,17 +437,13 @@ function updatePlayer(dt){
   P.wasThrust=thrust;P.thrust=thrust;
 }
 function updatePlay(dt){
-  // profondità e zone
   S.depth+=dt*(P.thrust?16:8);
   while(S.zoneIdx+1<ZONES.length&&S.depth>=ZONES[S.zoneIdx+1][0]){
     S.zoneIdx++;banner(ZONES[S.zoneIdx][1]);sBell();
     $('zoneName').textContent=ZONES[S.zoneIdx][1].toUpperCase();}
-  // consumo del buio
   if(S.depth>260)P.light-=dt*Math.min(2.5,.6+(S.depth-260)/500);
   if(P.light<=0){P.light=0;die();return;}
-  // battito cardiaco
   if(P.light<25){S.hbT-=dt;if(S.hbT<=0){sHeart();S.hbT=lerp(.5,.95,P.light/25);}}
-  // meduse (motes)
   const target=12+Math.min(14,S.depth/70);
   while(motes.length<target)spawnMote(false);
   for(let i=motes.length-1;i>=0;i--){const m=motes[i];m.t+=dt;
@@ -423,7 +451,6 @@ function updatePlay(dt){
     if(P.magnet>0){const d=Math.hypot(P.x-m.x,P.y-m.y);
       if(d<260&&d>1){m.bx+=(P.x-m.x)/d*420*dt;m.by+=(P.y-m.y)/d*420*dt;}}
     if(Math.hypot(P.x-m.x,P.y-m.y)<P.r+m.r+10)collect(m,i);}
-  // ricci
   if(S.depth>40){S.tUrchin-=dt;
     if(S.tUrchin<=0){spawnUrchin();
       S.tUrchin=clamp(3.6-S.depth*.0018,1.3,3.6)*rand(.7,1.3);}}
@@ -431,7 +458,6 @@ function updatePlay(dt){
     u.y+=u.vy*dt;u.x+=u.vx*dt+Math.sin(S.t+u.ph)*8*dt;u.rot+=u.vr*dt;
     if(u.y<-u.r-40){urchins.splice(i,1);continue;}
     if(Math.hypot(P.x-u.x,P.y-u.y)<P.r+u.r*.9)hit(20,u.x,u.y);}
-  // ombre (anguille)
   if(S.depth>220){S.tEel-=dt;
     if(S.tEel<=0&&eels.length<2+Math.floor(S.depth/500)){spawnEel();
       S.tEel=clamp(8-S.depth*.004,3.5,8)*rand(.8,1.2);}}
@@ -455,7 +481,6 @@ function updatePlay(dt){
       const dx=p0.x-s1.x,dy=p0.y-s1.y,dd=Math.hypot(dx,dy)||1;
       s1.x=p0.x-dx/dd*12;s1.y=p0.y-dy/dd*12;}
     if(Math.hypot(P.x-e.x,P.y-e.y)<P.r+12){hit(30,e.x,e.y);e.fleeing=1.7;}}
-  // pesci abissali (angler)
   if(S.depth>380){S.tAngler-=dt;
     if(S.tAngler<=0&&anglers.length<1){spawnAngler();S.tAngler=rand(16,26);}}
   for(let i=anglers.length-1;i>=0;i--){const a=anglers[i];a.t+=dt;
@@ -474,7 +499,6 @@ function updatePlay(dt){
     }else if(a.state==='leave'){const an=Math.atan2(a.y-P.y,a.x-P.x);
       a.x+=Math.cos(an)*260*dt;a.y+=Math.sin(an)*260*dt;
       if(a.x<-120||a.x>W+120||a.y<-120||a.y>H+120)anglers.splice(i,1);}
-    // esca: sembra una super-mota finché non ti avvicini
     if(a.state==='lurk'&&Math.hypot(P.x-lureX,P.y-lureY)<P.r+10){a.state='tele';a.t=.15;sGrowl();}}
 }
 function updateAmbient(dt,scroll){
@@ -499,7 +523,7 @@ function updateAmbient(dt,scroll){
   S.flash=Math.max(0,S.flash-dt*1.6);
 }
 
-/* ============================ DISEGNO ============================ */
+/* ============================ RENDER ============================ */
 function drawPlankton(li){const L=plankton[li],c=PL_CONF[li];
   for(const p of L){const tw=.5+.5*Math.sin(S.t*1.5+p.ph);
     ctx.fillStyle=`rgba(150,220,230,${c.a*tw*.6})`;
@@ -564,7 +588,6 @@ function drawAngler(a){
     ctx.beginPath();ctx.moveTo(a.x,a.y-14);
     ctx.quadraticCurveTo(a.x+14,a.y-34,lureX,lureY);ctx.stroke();
     ctx.globalCompositeOperation='source-over';}
-  // esca (visibile sempre: sembra una super-mota)
   const fl=revealed||Math.hypot(P.x-a.x,P.y-a.y)<190?.5+.5*Math.sin(S.t*26):1;
   ctx.globalCompositeOperation='lighter';ctx.globalAlpha=fl;
   ctx.drawImage(GLOW.lure,lureX-26,lureY-26,52,52);
@@ -586,7 +609,6 @@ function drawJelly(){
   if(S.state==='dying'&&S.dieT>.12)return;
   const flick=P.light<25?.55+.45*Math.sin(S.t*12):1;
   const blink=P.blinkT<0?0:1;
-  // tentacoli
   ctx.lineCap='round';
   for(let i=0;i<6;i++){const bx=(i-2.5)*P.r*.3;
     ctx.strokeStyle=i%3===2?'rgba(255,140,190,.32)':'rgba(150,245,235,.34)';
@@ -597,7 +619,6 @@ function drawJelly(){
       const base=tp?tp.x:P.x,baseY=tp?tp.y+j*6:P.y+j*8;
       ctx.lineTo(base+bx*.5+ox,baseY+j*2);}
     ctx.stroke();}
-  // aureola di luce
   ctx.globalCompositeOperation='lighter';
   const gr=(140+P.light*1.7)*flick;
   ctx.globalAlpha=.42*flick;
@@ -605,12 +626,10 @@ function drawJelly(){
   ctx.globalAlpha=.28*flick;const g2=gr*.55;
   ctx.drawImage(GLOW.pink,P.x-g2/2,P.y-g2/2,g2,g2);
   ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';
-  // corpo
   ctx.save();ctx.translate(P.x,P.y);ctx.rotate(P.tilt);
   if(P.invuln>0)ctx.globalAlpha=.5+.5*(Math.sin(S.t*30)>0?1:.3);
   const sx=1+.1*Math.sin(P.ph),sy=1-.09*Math.sin(P.ph);
   ctx.scale(sx,sy);const r=P.r;
-  // frange del bordo
   ctx.fillStyle='rgba(120,235,226,.28)';ctx.beginPath();
   for(let i=0;i<=5;i++){const px=-r+i*(r/2.5);
     ctx.moveTo(px,r*.42);ctx.quadraticCurveTo(px+r/5,r*.75,px+r/2.5,r*.42);}
@@ -623,7 +642,6 @@ function drawJelly(){
   ctx.strokeStyle='rgba(255,140,190,.5)';ctx.lineWidth=1.4;
   for(let i=0;i<3;i++){ctx.beginPath();
     ctx.arc(0,-r*.12,r*(.3+i*.16),Math.PI*.15,Math.PI*.85);ctx.stroke();}
-  // occhi
   const ey=-r*.08,ex=r*.34,er=r*.16;
   ctx.fillStyle='rgba(6,20,28,.9)';
   ctx.beginPath();ctx.ellipse(-ex,ey,er,er*Math.max(.1,blink),0,0,TAU);ctx.fill();
@@ -632,7 +650,6 @@ function drawJelly(){
     ctx.beginPath();ctx.arc(-ex+er*.35,ey-er*.35,er*.3,0,TAU);ctx.fill();
     ctx.beginPath();ctx.arc(ex+er*.35,ey-er*.35,er*.3,0,TAU);ctx.fill();}
   ctx.restore();ctx.globalAlpha=1;
-  // scudo & magnete
   if(P.shield>0){ctx.strokeStyle=`rgba(127,212,255,${.5+.3*Math.sin(S.t*5)})`;
     ctx.lineWidth=2;ctx.beginPath();ctx.arc(P.x,P.y,P.r*2.1,0,TAU);ctx.stroke();
     ctx.globalCompositeOperation='lighter';ctx.globalAlpha=.22;
@@ -650,7 +667,6 @@ function render(){
   ctx.save();
   if(S.shake>0)ctx.translate(rand(-1,1)*S.shake,rand(-1,1)*S.shake);
   drawRays();drawPlankton(0);drawWhale();drawPlankton(1);
-  // luce ambiente della medusa
   if(S.state!=='over'){ctx.globalCompositeOperation='lighter';
     const L=260+P.light*3;ctx.globalAlpha=.1*(P.light<25?.6+.4*Math.sin(S.t*12):1);
     ctx.drawImage(GLOW.cyan,P.x-L/2,P.y-L/2,L,L);
@@ -672,7 +688,6 @@ function render(){
     ctx.fillText(f.txt,f.x,f.y);}
   ctx.globalAlpha=1;drawPlankton(2);
   ctx.restore();
-  // vignetta + flash
   const low=clamp(1-P.light/60,0,1);
   const vg=ctx.createRadialGradient(W/2,H/2,H*.3+P.light*1.3,W/2,H/2,Math.max(W,H)*.72);
   vg.addColorStop(0,'rgba(0,3,8,0)');
@@ -683,7 +698,7 @@ function render(){
     ctx.fillStyle=fg;ctx.fillRect(0,0,W,H);}
 }
 
-/* ============================ HUD / FLUSSO ============================ */
+/* ============================ HUD / FLOW ============================ */
 function hud(){
   $('score').textContent=S.score;
   $('lightFill').style.width=(P.light/P.maxLight*100)+'%';
@@ -744,6 +759,7 @@ addEventListener('pointerdown',e=>{initAudio();
   pointer.x=e.clientX;pointer.y=e.clientY;pointer.down=true;});
 addEventListener('pointerup',()=>pointer.down=false);
 addEventListener('pointercancel',()=>pointer.down=false);
+addEventListener('touchstart',e=>{if(e.target.tagName!=='BUTTON')e.preventDefault();},{passive:false});
 addEventListener('touchmove',e=>e.preventDefault(),{passive:false});
 addEventListener('contextmenu',e=>e.preventDefault());
 addEventListener('keydown',e=>{
