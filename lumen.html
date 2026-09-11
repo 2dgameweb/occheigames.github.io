@@ -11,17 +11,28 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root{ --cy:#5ff5e3; --pk:#ff6fb5; --gd:#ffd166; --ink:#eafcff; --safe-top:env(safe-area-inset-top,0px); --safe-bottom:env(safe-area-inset-bottom,0px); }
+  :root{
+    --cy:#5ff5e3; --pk:#ff6fb5; --gd:#ffd166; --ink:#eafcff;
+    --safe-top:env(safe-area-inset-top,0px);
+    --safe-bottom:env(safe-area-inset-bottom,0px);
+    --ad-h:60px; /* altezza banner ad in basso */
+  }
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{height:100%;overflow:hidden;background:#020a12}
   body{font-family:'Space Grotesk',system-ui,sans-serif;color:var(--ink);
        -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
        overscroll-behavior:none;position:fixed;width:100%;height:100%;
-       padding-top:var(--safe-top);padding-bottom:calc(var(--safe-bottom) + 30px)}
-  canvas{display:block;position:fixed;inset:0;touch-action:none;cursor:crosshair;
-         -webkit-tap-highlight-color:transparent}
+       padding-top:var(--safe-top)}
+  /* Canvas = area di gioco SOPRA l'ad banner */
+  canvas{display:block;position:fixed;top:0;left:0;right:0;
+         bottom:calc(var(--ad-h) + var(--safe-bottom));
+         touch-action:none;cursor:crosshair;
+         -webkit-tap-highlight-color:transparent;
+         background:#020a12}
 
-  #hud{position:fixed;top:calc(var(--safe-top) + 8px);left:0;right:0;z-index:10;
+  /* HUD confinato nell'area di gioco */
+  #hud{position:fixed;top:calc(var(--safe-top) + 8px);left:0;right:0;
+       bottom:calc(var(--ad-h) + var(--safe-bottom));z-index:10;
        padding:16px 22px;display:flex;justify-content:space-between;align-items:flex-start;
        pointer-events:none}
   #hud.hidden{display:none}
@@ -55,25 +66,33 @@
                  18%{opacity:1;letter-spacing:.45em;transform:translateY(0)}
                  75%{opacity:1}100%{opacity:0;letter-spacing:.3em}}
 
-  #hint{position:fixed;bottom:calc(var(--safe-bottom) + 70px);left:50%;transform:translateX(-50%);z-index:10;
-        pointer-events:none;font-size:.85rem;letter-spacing:.06em;color:rgba(234,252,255,.75);
-        transition:opacity 1.4s;white-space:nowrap;text-align:center;max-width:90vw}
+  /* Hint confinato nell'area di gioco */
+  #hint{position:fixed;left:50%;transform:translateX(-50%);
+        bottom:calc(var(--ad-h) + var(--safe-bottom) + 14px);
+        z-index:10;pointer-events:none;font-size:.85rem;letter-spacing:.06em;
+        color:rgba(234,252,255,.75);transition:opacity 1.4s;white-space:nowrap;
+        text-align:center;max-width:90vw}
   #hint.fade{opacity:0}
 
-  #sysBtns{position:fixed;bottom:calc(var(--safe-bottom) + 80px);right:18px;z-index:40;
-           display:flex;gap:8px}
+  /* Bottoni confinati nell'area di gioco */
+  #sysBtns{position:fixed;right:18px;
+           bottom:calc(var(--ad-h) + var(--safe-bottom) + 14px);
+           z-index:40;display:flex;gap:8px}
   .sbtn{width:44px;height:44px;border-radius:12px;font-size:1.1rem;cursor:pointer;
         color:var(--ink);background:rgba(4,20,30,.55);border:1px solid rgba(95,245,227,.35);
         transition:.18s;display:grid;place-items:center;-webkit-tap-highlight-color:transparent}
   .sbtn:hover{transform:translateY(-2px);border-color:var(--cy);box-shadow:0 6px 18px rgba(95,245,227,.25)}
 
-  .overlay{position:fixed;inset:0;z-index:30;display:flex;flex-direction:column;
+  /* Overlay confinato nell'area di gioco */
+  .overlay{position:fixed;top:0;left:0;right:0;
+           bottom:calc(var(--ad-h) + var(--safe-bottom));
+           z-index:30;display:flex;flex-direction:column;
            align-items:center;justify-content:center;text-align:center;padding:20px;
            background:radial-gradient(ellipse at 50% 28%,rgba(3,22,34,.25),rgba(1,5,9,.82));
-           transition:opacity .5s,visibility .5s;overflow-y:auto;padding-bottom:calc(var(--safe-bottom) + 60px)}
+           transition:opacity .5s,visibility .5s;overflow-y:auto}
   .overlay.hidden{opacity:0;visibility:hidden;pointer-events:none}
   .kicker{font-size:.68rem;letter-spacing:.55em;color:var(--cy);text-transform:uppercase;margin-bottom:14px}
-  h1.title{font-family:'Unbounded',sans-serif;font-weight:900;font-size:clamp(3.2rem,13vw,8.5rem);
+  h1.title{font-family:'Unbounded',sans-serif;font-weight:900;font-size:clamp(2.6rem,10vw,8rem);
            letter-spacing:.05em;line-height:.95;animation:floaty 5s ease-in-out infinite;
            text-shadow:0 0 16px rgba(95,245,227,.9),0 0 60px rgba(95,245,227,.45),0 0 130px rgba(255,111,181,.35)}
   @keyframes floaty{50%{transform:translateY(-12px)}}
@@ -109,21 +128,39 @@
              box-shadow:0 0 24px rgba(255,209,102,.7);animation:pop .5s}
   .btnrow{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
 
-  #pausedOv{position:fixed;inset:0;z-index:35;display:grid;place-items:center;background:rgba(1,5,9,.6)}
+  /* Pausa confinato nell'area di gioco */
+  #pausedOv{position:fixed;top:0;left:0;right:0;
+            bottom:calc(var(--ad-h) + var(--safe-bottom));
+            z-index:35;display:grid;place-items:center;background:rgba(1,5,9,.6)}
   #pausedOv.hidden{display:none}
   #pausedOv div{font-family:'Unbounded',sans-serif;font-weight:900;font-size:2rem;letter-spacing:.4em;
                 text-shadow:0 0 24px rgba(95,245,227,.7)}
 
-  #adBanner{position:fixed;bottom:0;left:0;right:0;z-index:50;background:rgba(2,10,18,.75);
-            padding:6px 10px calc(var(--safe-bottom,8px) + 6px);
+  /* BANNER AD: zona separata in basso, NON sovrappone il gioco */
+  #adBanner{position:fixed;bottom:0;left:0;right:0;z-index:50;
+            height:calc(var(--ad-h) + var(--safe-bottom));
+            padding:6px 10px var(--safe-bottom);
             display:flex;justify-content:center;align-items:center;
-            border-top:1px solid rgba(95,245,227,.12)}
-  #adBanner ins{display:block;max-width:728px;width:100%;min-height:0}
+            background:#010710;border-top:1px solid rgba(95,245,227,.15)}
+  #adBanner ins{display:block;max-width:728px;width:100%;height:100%}
 
-  @media(max-width:560px){.chips{max-width:92vw}.stats{grid-template-columns:repeat(2,44vw)}
-    #score{font-size:1.6rem}#depth{font-size:1.4rem}#lightWrap{width:140px}}
-  @media(max-width:380px){#score{font-size:1.3rem}#depth{font-size:1.2rem}
-    h1.title{font-size:2.8rem}.tagline{font-size:.82rem}}
+  @media(max-width:560px){
+    :root{--ad-h:50px}
+    .chips{max-width:92vw}
+    .stats{grid-template-columns:repeat(2,44vw)}
+    #score{font-size:1.5rem}
+    #depth{font-size:1.3rem}
+    #lightWrap{width:130px}
+    .chip{padding:.45rem .8rem;font-size:.75rem}
+  }
+  @media(max-width:380px){
+    :root{--ad-h:50px}
+    #score{font-size:1.25rem}
+    #depth{font-size:1.15rem}
+    h1.title{font-size:2.4rem}
+    .tagline{font-size:.82rem}
+    .btn{padding:.9rem 1.8rem;font-size:.95rem}
+  }
 </style>
 </head>
 <body>
@@ -158,29 +195,28 @@
   <p class="tagline">You are a small jellyfish descending into the darkness.<br>
      Your light is your life: collect it, protect it. <b>Don't fade away.</b></p>
   <div class="chips">
-    <span class="chip">🖱️ Jellyfish follows cursor/touch</span>
-    <span class="chip">⚡ Hold to swim faster</span>
-    <span class="chip">✦ Light is life and score</span>
-    <span class="chip">🌑 Deep darkness consumes it</span>
-    <span class="chip">🎣 Don't trust beautiful lights…</span>
+    <span class="chip">🖱️ Follow cursor/touch</span>
+    <span class="chip">⚡ Hold to swim</span>
+    <span class="chip">✦ Light = life & score</span>
+    <span class="chip">🎣 Don't trust pretty lights…</span>
   </div>
   <button class="btn" id="startBtn">DIVE IN ▾</button>
   <div id="recordChip"></div>
-  <div class="foot">🎧 headphones recommended · live synthesized audio · P = pause · M = mute</div>
+  <div class="foot">🎧 headphones recommended · P = pause · M = mute</div>
 </div>
 
 <div id="over" class="overlay hidden">
   <div class="overTitle">THE DARKNESS TOOK YOU</div>
   <div id="newRecord">★ NEW RECORD ★</div>
   <div class="stats">
-    <div class="stat"><div class="v" id="stDepth">0 m</div><div class="k">Depth Reached</div></div>
-    <div class="stat"><div class="v" id="stScore">0</div><div class="k">Lumen Collected</div></div>
+    <div class="stat"><div class="v" id="stDepth">0 m</div><div class="k">Depth</div></div>
+    <div class="stat"><div class="v" id="stScore">0</div><div class="k">Lumen</div></div>
     <div class="stat"><div class="v" id="stCombo">×1</div><div class="k">Max Combo</div></div>
-    <div class="stat"><div class="v" id="stBest">0</div><div class="k">Best Score</div></div>
+    <div class="stat"><div class="v" id="stBest">0</div><div class="k">Best</div></div>
   </div>
   <div class="btnrow">
     <button class="btn" id="retryBtn">TRY AGAIN</button>
-    <button class="btn ghost" id="menuBtn">Return to Surface</button>
+    <button class="btn ghost" id="menuBtn">Surface</button>
   </div>
 </div>
 
@@ -196,12 +232,10 @@
 </div>
 
 <script>
-/* Initialize AdSense */
 (adsbygoogle = window.adsbygoogle || []).push({});
 
 (() => {
 'use strict';
-/* ============================ UTILITIES ============================ */
 const TAU=Math.PI*2;
 const rand=(a,b)=>a+Math.random()*(b-a);
 const pick=a=>a[Math.floor(Math.random()*a.length)];
@@ -211,10 +245,23 @@ const $=id=>document.getElementById(id);
 
 const canvas=$('sea'), ctx=canvas.getContext('2d');
 let W=0,H=0,DPR=1;
-function resize(){DPR=Math.min(2,devicePixelRatio||1);W=innerWidth;H=innerHeight;
-  canvas.width=W*DPR;canvas.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);}
+
+/* Calcola dimensioni area di gioco (sopra l'ad banner) */
+function getAdHeight(){
+  const safeBottom = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--safe-bottom')) || 0;
+  const adH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--ad-h')) || 60;
+  return adH + safeBottom;
+}
+function resize(){
+  DPR=Math.min(2,devicePixelRatio||1);
+  W=innerWidth;
+  H=innerHeight - getAdHeight();
+  if(H<200)H=200;
+  canvas.width=W*DPR;canvas.height=H*DPR;
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+}
 addEventListener('resize',resize);
-addEventListener('orientationchange',()=>setTimeout(resize,100));
+addEventListener('orientationchange',()=>setTimeout(resize,200));
 resize();
 
 function makeGlow(rgb){const s=128,c=document.createElement('canvas');c.width=c.height=s;
@@ -226,7 +273,6 @@ const GLOW={cyan:makeGlow('95,245,227'),gold:makeGlow('255,209,102'),pink:makeGl
             shield:makeGlow('127,212,255'),lure:makeGlow('214,255,158'),red:makeGlow('255,80,90')};
 const css=c=>`rgb(${c[0]|0},${c[1]|0},${c[2]|0})`;
 
-/* ============================ AUDIO ============================ */
 let actx=null,master=null,echoIn=null,noiseBuf=null,muted=false;
 function initAudio(){
   if(actx){actx.resume&&actx.resume();return;}
@@ -292,7 +338,6 @@ const sWhale=()=>{tone(170,118,4,'sine',.11,0,true);tone(255,90,3.6,'sine',.035,
 const sHeart=()=>{tone(75,50,.1,'sine',.35);tone(68,45,.09,'sine',.25,.14);};
 const sClick=()=>tone(700,700,.06,'sine',.09);
 
-/* ============================ STATE ============================ */
 const ZONES=[[0,'Shimmering Surface'],[150,'Twilight Zone'],[350,'Midnight Zone'],
   [620,'The Great Silence'],[950,'Abyssal Dark'],[1350,'The Nameless Trench'],
   [1800,'Heart of Darkness'],[2400,'Where Light Dreams']];
@@ -321,7 +366,6 @@ let pointer={x:W/2,y:H/3,down:false};
 const keys={};
 let best=JSON.parse(localStorage.getItem('lumen.best')||'null')||{d:0,s:0};
 
-/* ============================ SPAWN ============================ */
 function spawnMote(nearOk){
   let x,y,tries=0;
   do{x=rand(30,W-30);y=rand(30,H-30);tries++;}
@@ -365,7 +409,6 @@ function addFloat(x,y,txt,color){floats.push({x,y,txt,color,t:0,life:1.1});}
 function banner(txt){const b=$('banner');b.textContent=txt;
   b.classList.remove('show');void b.offsetWidth;b.classList.add('show');}
 
-/* ============================ LOGIC ============================ */
 function hit(dmg,sx,sy){
   if(P.invuln>0)return;
   if(P.shield>0){P.shield=0;P.invuln=.9;sPop();
@@ -523,7 +566,6 @@ function updateAmbient(dt,scroll){
   S.flash=Math.max(0,S.flash-dt*1.6);
 }
 
-/* ============================ RENDER ============================ */
 function drawPlankton(li){const L=plankton[li],c=PL_CONF[li];
   for(const p of L){const tw=.5+.5*Math.sin(S.t*1.5+p.ph);
     ctx.fillStyle=`rgba(150,220,230,${c.a*tw*.6})`;
@@ -698,7 +740,6 @@ function render(){
     ctx.fillStyle=fg;ctx.fillRect(0,0,W,H);}
 }
 
-/* ============================ HUD / FLOW ============================ */
 function hud(){
   $('score').textContent=S.score;
   $('lightFill').style.width=(P.light/P.maxLight*100)+'%';
@@ -752,7 +793,7 @@ function toggleMute(){muted=!muted;
   if(master)master.gain.value=muted?0:.55;
   $('muteBtn').textContent=muted?'🔇':'🔊';}
 
-/* ============================ INPUT ============================ */
+/* INPUT: le coordinate sono già relative al canvas (che è sopra l'ad) */
 addEventListener('pointermove',e=>{pointer.x=e.clientX;pointer.y=e.clientY;});
 addEventListener('pointerdown',e=>{initAudio();
   if(e.target.closest('button'))return;
@@ -779,7 +820,6 @@ $('menuBtn').onclick=()=>{sClick();showMenu();};
 $('pauseBtn').onclick=()=>{sClick();togglePause();};
 $('muteBtn').onclick=()=>{initAudio();toggleMute();};
 
-/* ============================ LOOP ============================ */
 let last=performance.now();
 function loop(now){
   requestAnimationFrame(loop);
