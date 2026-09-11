@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mini Games Arcade</title>
+<!-- ===== GOOGLE ADSENSE ===== -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6380006770259018"
+     crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rubik:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;font-family:Rubik,system-ui,sans-serif;color:#fff;
+  background:radial-gradient(900px 520px at 15% -10%,rgba(124,77,255,.35),transparent 60%),
+    radial-gradient(820px 520px at 110% 115%,rgba(0,229,255,.16),transparent 60%),
+    linear-gradient(165deg,#160a2e,#0d1b36);
+  display:flex;flex-direction:column;align-items:center;padding:40px 16px 20px}
+h1{font-family:'Press Start 2P',monospace;font-size:clamp(18px,4vw,30px);
+  text-shadow:0 0 18px rgba(124,77,255,.9);margin-bottom:8px;text-align:center}
+.sub{opacity:.75;margin-bottom:32px;text-align:center}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;width:100%;max-width:960px}
+.card{display:block;text-decoration:none;color:#fff;
+  background:linear-gradient(170deg,rgba(60,30,110,.6),rgba(15,25,55,.7));
+  border:1px solid rgba(255,255,255,.16);border-radius:20px;padding:16px;text-align:center;
+  transition:transform .15s, box-shadow .15s}
+.card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(124,77,255,.35)}
+.card img{width:100%;height:170px;object-fit:cover;border-radius:14px;margin-bottom:12px;
+  box-shadow:0 10px 26px rgba(0,0,0,.5)}
+.card h2{font-family:'Press Start 2P',monospace;font-size:12px;margin-bottom:8px}
+.card p{font-size:13px;opacity:.75;line-height:1.5}
+.card .play{display:inline-block;margin-top:12px;font-family:'Press Start 2P',monospace;font-size:11px;
+  padding:10px 18px;border-radius:12px;background:linear-gradient(180deg,#5dff9d,#19c96d);color:#08121f}
+.soon{opacity:.45}
+.soon .icon{font-size:52px;margin:40px 0 10px}
+
+/* NEW badge for recently added games */
+.new-badge{display:inline-block;margin-left:6px;padding:2px 8px;font-size:9px;
+  background:linear-gradient(180deg,#ff6b6b,#e63946);color:#fff;border-radius:6px;
+  font-family:'Press Start 2P',monospace;vertical-align:middle;
+  box-shadow:0 0 10px rgba(230,57,70,.6);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
+
+.about{width:100%;max-width:960px;margin-top:40px;
+  background:linear-gradient(170deg,rgba(60,30,110,.5),rgba(15,25,55,.65));
+  border:1px solid rgba(255,255,255,.14);border-radius:20px;padding:26px 24px;text-align:left}
+.about h2{font-family:'Press Start 2P',monospace;font-size:14px;margin-bottom:16px;
+  color:#c9b6ff;text-shadow:0 0 12px rgba(124,77,255,.7)}
+.about p{font-size:13.5px;line-height:1.75;opacity:.85;margin-bottom:12px}
+.about p b{color:#7ce7ff}
+.about .badges{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+.about .badge{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);
+  border-radius:999px;padding:7px 14px;font-size:11.5px;font-weight:700;letter-spacing:.3px}
+.about .contact{font-size:12px;opacity:.7;margin-bottom:0}
+.about .contact a{color:#7ce7ff;text-decoration:none}
+.about .contact a:hover{text-decoration:underline}
+
+#adbar{width:100%;max-width:960px;margin-top:32px;min-height:100px}
+
+footer{margin-top:24px;font-size:12px;opacity:.7;text-align:center;line-height:1.9;max-width:960px}
+footer a{color:#7ce7ff;text-decoration:none;margin:0 8px}
+footer a:hover{text-decoration:underline}
+footer .sep{opacity:.4;margin:0 4px}
+</style>
+</head>
+<body>
+  <h1>MINI GAMES ARCADE</h1>
+  <div class="sub">Pick a game and have fun!</div>
+
+  <div class="grid">
+    <a class="card" href="monster-smash.html">
+      <img src="cover-monsters.jpg" alt="Monster Smash">
+      <h2>MONSTER SMASH</h2>
+      <p>Squash monsters before their timer runs out. Daily challenge, 3 bosses, gems, shop & more!</p>
+      <span class="play">PLAY</span>
+    </a>
+    <a class="card" href="rocket-rise.html">
+      <img src="cover-rocket.jpg" alt="Rocket Rise">
+      <h2>ROCKET RISE</h2>
+      <p>Climb as high as you can! Engine management, flammable zones, black holes, aliens & repairs.</p>
+      <span class="play">PLAY</span>
+    </a>
+    <a class="card" href="match-escape.html">
+      <img src="cover-match.jpg" alt="Match & Escape">
+      <h2>MATCH &amp; ESCAPE</h2>
+      <p>Match 3+ symbols to clear the road! A monster is chasing you — complete levels before time runs out!</p>
+      <span class="play">PLAY</span>
+    </a>
+
+    <!-- ========== NUOVO GIOCO: COW ESCAPE ========== -->
+    <a class="card" href="cow-escape.html">
+      <img src="cover-cows.jpg" alt="Cow Escape">
+      <h2>COW ESCAPE <span class="new-badge">NEW</span></h2>
+      <p>Flee from angry cows through a procedural 3D forest maze! Sprint, jump over logs, dodge rocks, avoid mud traps, and reach one of the many escape flags. Click-to-move with smart pathfinding, mobile joystick, saved progress & increasing difficulty.</p>
+      <span class="play">PLAY</span>
+    </a>
+
+    <!-- ========== NUOVO GIOCO: LUMEN ========== -->
+    <a class="card" href="lumen.html">
+      <img src="cover-lumen.jpg" alt="Lumen">
+      <h2>LUMEN <span class="new-badge">NEW</span></h2>
+      <p>Dive into the abyss as a bioluminescent jellyfish! Collect light to survive, avoid deep-sea predators, and discover the truth about the angler's lure. Immersive synth audio, 8 depth zones, combos, shields & whale encounters.</p>
+      <span class="play">PLAY</span>
+    </a>
+
+    <div class="card soon">
+      <div class="icon">🔒</div>
+      <h2>COMING SOON</h2>
+      <p>More mini-games are on the way…</p>
+    </div>
+  </div>
+
+  <!-- ===== ABOUT ===== -->
+  <section class="about">
+    <h2>ABOUT MINI GAMES ARCADE</h2>
+    <p><b>Mini Games Arcade</b> is an independent collection of free browser games.
+    Our mission is simple: fun, bite-sized games you can play instantly —
+    <b>no downloads, no installs, no account required</b>. Just open the site and press play,
+    on your phone, tablet or computer.</p>
+    <p>Every game is hand-built, carefully tested and updated regularly. Your best scores,
+    crystals and unlocked items are saved <b>privately on your own device</b> — we don't ask
+    for personal data and we never will. New mini-games are added all the time, so keep an
+    eye on the "Coming Soon" slot!</p>
+    <p>We are a small indie team making games with passion. If you have ideas, feedback or
+    partnership requests, we would love to hear from you.</p>
+    <div class="badges">
+      <span class="badge">100% FREE</span>
+      <span class="badge">NO DOWNLOADS</span>
+      <span class="badge">NO SIGN-UP</span>
+      <span class="badge">MOBILE FRIENDLY</span>
+      <span class="badge">SAFE & FAMILY FRIENDLY</span>
+      <span class="badge">NEW GAMES REGULARLY</span>
+    </div>
+    <p class="contact">Contact: <a href="mailto:davidebellomo1@icloud.com">davidebellomo1@icloud.com</a></p>
+  </section>
+
+  <!-- ===== ADSENSE BANNER ===== -->
+  <div id="adbar">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-6380006770259018"
+         data-ad-slot="IL-TUO-SLOT-ID"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <footer>
+    © 2026 Mini Games Arcade — All rights reserved.<br>
+    Made with passion for players everywhere.<br>
+    <a href="privacy.html">Privacy Policy</a>
+    <span class="sep">•</span>
+    <a href="mailto:davidebellomo1@icloud.com">Contact</a>
+  </footer>
+</body>
+</html>
