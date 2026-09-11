@@ -17,7 +17,7 @@
   body{font-family:'Space Grotesk',system-ui,sans-serif;color:var(--ink);
        -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
        overscroll-behavior:none;position:fixed;width:100%;height:100%;
-       padding-top:var(--safe-top);padding-bottom:var(--safe-bottom)}
+       padding-top:var(--safe-top);padding-bottom:calc(var(--safe-bottom) + 30px)}
   canvas{display:block;position:fixed;inset:0;touch-action:none;cursor:crosshair;
          -webkit-tap-highlight-color:transparent}
 
@@ -55,12 +55,12 @@
                  18%{opacity:1;letter-spacing:.45em;transform:translateY(0)}
                  75%{opacity:1}100%{opacity:0;letter-spacing:.3em}}
 
-  #hint{position:fixed;bottom:calc(var(--safe-bottom) + 80px);left:50%;transform:translateX(-50%);z-index:10;
+  #hint{position:fixed;bottom:calc(var(--safe-bottom) + 70px);left:50%;transform:translateX(-50%);z-index:10;
         pointer-events:none;font-size:.85rem;letter-spacing:.06em;color:rgba(234,252,255,.75);
         transition:opacity 1.4s;white-space:nowrap;text-align:center;max-width:90vw}
   #hint.fade{opacity:0}
 
-  #sysBtns{position:fixed;bottom:calc(var(--safe-bottom) + 90px);right:18px;z-index:40;
+  #sysBtns{position:fixed;bottom:calc(var(--safe-bottom) + 80px);right:18px;z-index:40;
            display:flex;gap:8px}
   .sbtn{width:44px;height:44px;border-radius:12px;font-size:1.1rem;cursor:pointer;
         color:var(--ink);background:rgba(4,20,30,.55);border:1px solid rgba(95,245,227,.35);
@@ -70,7 +70,7 @@
   .overlay{position:fixed;inset:0;z-index:30;display:flex;flex-direction:column;
            align-items:center;justify-content:center;text-align:center;padding:20px;
            background:radial-gradient(ellipse at 50% 28%,rgba(3,22,34,.25),rgba(1,5,9,.82));
-           transition:opacity .5s,visibility .5s;overflow-y:auto}
+           transition:opacity .5s,visibility .5s;overflow-y:auto;padding-bottom:calc(var(--safe-bottom) + 60px)}
   .overlay.hidden{opacity:0;visibility:hidden;pointer-events:none}
   .kicker{font-size:.68rem;letter-spacing:.55em;color:var(--cy);text-transform:uppercase;margin-bottom:14px}
   h1.title{font-family:'Unbounded',sans-serif;font-weight:900;font-size:clamp(3.2rem,13vw,8.5rem);
@@ -114,11 +114,11 @@
   #pausedOv div{font-family:'Unbounded',sans-serif;font-weight:900;font-size:2rem;letter-spacing:.4em;
                 text-shadow:0 0 24px rgba(95,245,227,.7)}
 
-  #adBanner{position:fixed;bottom:0;left:0;right:0;z-index:50;background:rgba(2,10,18,.85);
-            padding:var(--safe-bottom,10px) 10px 10px 10px;min-height:70px;
+  #adBanner{position:fixed;bottom:0;left:0;right:0;z-index:50;background:rgba(2,10,18,.75);
+            padding:6px 10px calc(var(--safe-bottom,8px) + 6px);
             display:flex;justify-content:center;align-items:center;
-            border-top:1px solid rgba(95,245,227,.2);backdrop-filter:blur(8px)}
-  #adBanner ins{display:block;max-width:728px;width:100%}
+            border-top:1px solid rgba(95,245,227,.12)}
+  #adBanner ins{display:block;max-width:728px;width:100%;min-height:0}
 
   @media(max-width:560px){.chips{max-width:92vw}.stats{grid-template-columns:repeat(2,44vw)}
     #score{font-size:1.6rem}#depth{font-size:1.4rem}#lightWrap{width:140px}}
@@ -395,7 +395,7 @@ function collect(m,i){
   sCollect(Math.min(P.combo,14));
   const c=$('combo');
   if(P.combo>=2){c.textContent='COMBO ×'+P.combo;c.style.opacity=1;
-    c.classList.remove('pop');void b.offsetWidth;c.classList.add('pop');}
+    c.classList.remove('pop');void c.offsetWidth;c.classList.add('pop');}
 }
 function updatePlayer(dt){
   let tx=pointer.x,ty=pointer.y,thrust=pointer.down;
